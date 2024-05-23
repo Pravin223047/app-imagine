@@ -19,16 +19,18 @@ import { Button } from "../ui/button";
 
 import { Search } from "./Search";
 
-export const Collection = ({
+interface CollectionProps {
+  hasSearch?: boolean;
+  images: IImage[];
+  totalPages?: number;
+  page: number;
+}
+
+export const Collection: React.FC<CollectionProps> = ({
   hasSearch = false,
   images,
   totalPages = 1,
   page,
-}: {
-  images: IImage[];
-  totalPages?: number;
-  page: number;
-  hasSearch?: boolean;
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -56,7 +58,7 @@ export const Collection = ({
       {images.length > 0 ? (
         <ul className="collection-list">
           {images.map((image) => (
-            <Card image={image} key={image._id} />
+            <Card image={image} key={String(image._id)} />
           ))}
         </ul>
       ) : (
@@ -94,7 +96,11 @@ export const Collection = ({
   );
 };
 
-const Card = ({ image }: { image: IImage }) => {
+interface CardProps {
+  image: IImage;
+}
+
+const Card: React.FC<CardProps> = ({ image }) => {
   return (
     <li>
       <Link href={`/transformations/${image._id}`} className="collection-card">
